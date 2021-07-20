@@ -7,8 +7,8 @@ class User(AbstractUser):
     is_ciudadano = models.BooleanField(default=False)
     is_organizacion = models.BooleanField(default=False)
     is_convencional = models.BooleanField(default=False)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    nombre = models.CharField("Nombre", max_length=255)
+    # last_name = models.CharField(max_length=255)
     last_login = models.DateTimeField(blank=True, null=True, verbose_name='last login')
 
 
