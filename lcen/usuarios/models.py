@@ -16,6 +16,24 @@ class User(AbstractUser):
 class Ciudadano(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
     email = models.EmailField(max_length=255)
+    GENERO = (
+        ('Femenino', 'Femenino'),
+        ('Masculino', 'Masculino'),
+        ('No Binario', 'No Binario'),
+        ('No Declara', 'No Declara'),
+        )
+    genero = models.CharField("Género", max_length=100, choices=GENERO)
+    RANGOEDAD = (
+        ('-20', '-20'),
+        ('20-29', '20-29'),
+        ('30-39', '30-39'),
+        ('40-49', '40-49'),
+        ('50-59', '50-59'),
+        ('60-69', '60-69'),
+        ('70+', '70+'),
+        ('No Declara', 'No Declara'),
+        )
+    rangoedad = models.CharField("Rango Edad", max_length=100, choices=RANGOEDAD)
     cualquiercosa = models.CharField(max_length=255)
 
     class Meta:
