@@ -8,10 +8,9 @@ from .models import User, Ciudadano, Organizacion, Convencional
 
 class CiudadanoSignUpForm(UserCreationForm):
     username = forms.CharField(label='Nombre Usuario')
-    password1 = forms.CharField(label=('Contraseña'), widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
-    password2 = forms.CharField(label=('Confirmar Contraseña'), widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
-    nombre = forms.CharField(label=('Nombre y Apellido'), required=True)
-    # last_name = forms.CharField(required=True)
+    password1 = forms.CharField(label='Contraseña', widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
+    password2 = forms.CharField(label='Confirmar Contraseña', widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
+    nombre = forms.CharField(label='Nombre y Apellido', required=True)
     email = forms.EmailField(required=True)
     genero = forms.CharField(required=False, widget=forms.Select(choices=Ciudadano.GENERO))
     rangoedad = forms.CharField(required=False, widget=forms.Select(choices=Ciudadano.RANGOEDAD))
@@ -28,7 +27,6 @@ class CiudadanoSignUpForm(UserCreationForm):
         user = super().save(commit=False)
         user.is_ciudadano = True
         user.nombre = self.cleaned_data.get('nombre')
-        # user.last_name = self.cleaned_data.get('last_name')
         user.save()
         ciudadano = Ciudadano.objects.create(user=user)
         ciudadano.email=self.cleaned_data.get('email')
@@ -44,10 +42,9 @@ class CiudadanoSignUpForm(UserCreationForm):
 
 class OrganizacionSignUpForm(UserCreationForm):
     username = forms.CharField(label='Nombre Usuario')
-    password1 = forms.CharField(label=('Contraseña'), widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
-    password2 = forms.CharField(label=('Confirmar Contraseña'), widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
-    nombre = forms.CharField(label=('Nombre Organización/Colectivo'), required=True)
-    # last_name = forms.CharField(required=True)
+    password1 = forms.CharField(label='Contraseña', widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
+    password2 = forms.CharField(label='Confirmar Contraseña', widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
+    nombre = forms.CharField(label='Nombre Organización/Colectivo', required=True)
     email = forms.EmailField(required=True)
     email_contacto = forms.EmailField(required=True)
     telefono_contacto = forms.CharField(required=False)
@@ -61,18 +58,21 @@ class OrganizacionSignUpForm(UserCreationForm):
         user = super().save(commit=False)
         user.is_organizacion = True
         user.nombre = self.cleaned_data.get('nombre')
-        # user.last_name = self.cleaned_data.get('last_name')
         user.save()
         organizacion = Organizacion.objects.create(user=user)
         organizacion.email=self.cleaned_data.get('email')
+        organizacion.email_contacto=self.cleaned_data.get('email_contacto')
+        organizacion.telefono_contacto=self.cleaned_data.get('telefono_contacto')
         organizacion.cualquiercosa=self.cleaned_data.get('cualquiercosa')
         organizacion.save()
         return user
 
 
 class ConvencionalSignUpForm(UserCreationForm):
-    nombre = forms.CharField(required=True)
-    # last_name = forms.CharField(required=True)
+    username = forms.CharField(label='Nombre Usuario')
+    password1 = forms.CharField(label='Contraseña', widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
+    password2 = forms.CharField(label='Confirmar Contraseña', widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
+    nombre = forms.CharField(label='Nombre y Apellido', required=True)
     email = forms.EmailField(required=True)
     cualquiercosa = forms.CharField(required=True)
 
@@ -84,7 +84,6 @@ class ConvencionalSignUpForm(UserCreationForm):
         user = super().save(commit=False)
         user.is_convencional = True
         user.nombre = self.cleaned_data.get('nombre')
-        # user.last_name = self.cleaned_data.get('last_name')
         user.save()
         convencional = Convencional.objects.create(user=user)
         convencional.email=self.cleaned_data.get('email')
