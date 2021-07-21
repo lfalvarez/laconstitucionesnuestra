@@ -24,6 +24,7 @@ class Region(models.Model):
 
 class Distrito(models.Model):
     distrito = models.CharField("Distrito", max_length=225, unique=True)
+    region_distrito = models.ForeignKey(Region, related_name="region_distrito", verbose_name="Región del Distrito", null=True, on_delete=models.SET_NULL)
     class Meta:
         verbose_name = "Distrito"
         verbose_name_plural = "Distritos"

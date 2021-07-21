@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from managers.models import Pais, Region, Distrito, Comuna
 
 
 class User(AbstractUser):
@@ -34,6 +34,9 @@ class Ciudadano(models.Model):
         ('No Declara', 'No Declara'),
         )
     rangoedad = models.CharField("Rango Edad", max_length=100, choices=RANGOEDAD)
+    pais = models.ForeignKey(Pais, blank=True, null=True, on_delete=models.SET_NULL)
+    region = models.ForeignKey(Region, blank=True, null=True, on_delete=models.SET_NULL)
+    comuna = models.ForeignKey(Comuna, blank=True, null=True, on_delete=models.SET_NULL)
     cualquiercosa = models.CharField(max_length=255)
 
     class Meta:
