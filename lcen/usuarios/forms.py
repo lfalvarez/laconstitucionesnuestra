@@ -22,6 +22,8 @@ class CiudadanoSignUpForm(UserCreationForm):
         user.save()
         ciudadano = Ciudadano.objects.create(user=user)
         ciudadano.email=self.cleaned_data.get('email')
+        organizacion.genero=self.cleaned_data.get('genero')
+        organizacion.rangoedad=self.cleaned_data.get('rangoedad')
         ciudadano.cualquiercosa=self.cleaned_data.get('cualquiercosa')
         ciudadano.save()
         return user

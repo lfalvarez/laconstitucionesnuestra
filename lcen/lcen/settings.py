@@ -33,6 +33,13 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 # Application definition
 
 INSTALLED_APPS = [
+    'usuarios.apps.UsuariosConfig',
+    'home.apps.HomeConfig',
+    'propuestas.apps.PropuestasConfig',
+    'managers.apps.ManagersConfig',
+    'convencionales.apps.ConvencionalesConfig',
+    'laconstitucion.apps.LaconstitucionConfig',
+    'organizaciones.apps.OrganizacionesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,9 +49,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'crispy_forms',
     'crispy_bootstrap5',
-    'usuarios',
-    'home',
-    'propuestas',
+    'import_export',
 ]
 
 MIDDLEWARE = [

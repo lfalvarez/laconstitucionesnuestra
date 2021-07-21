@@ -49,7 +49,6 @@ class Organizacion(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
     email = models.EmailField(max_length=255)
     cualquiercosa = models.CharField(max_length=255)
-
     class Meta:
         verbose_name = "Organzación"
         verbose_name_plural = "Organizaciones"
