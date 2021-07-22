@@ -41,3 +41,13 @@ class Comuna(models.Model):
         verbose_name_plural = "Comunas"
     def __str__(self):
         return self.comuna
+
+
+
+class Alcance(models.Model):
+    alcance = models.CharField("Alcance", max_length=225, unique=True)
+    class Meta:
+        verbose_name = "Alcance"
+        verbose_name_plural = "Alcances"
+    def __str__(self):
+    return self.alcance

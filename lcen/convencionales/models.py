@@ -24,9 +24,9 @@ class Lista(models.Model):
 
 
 class Movimiento(models.Model):
-    nombre = models.CharField("Nombre Partido/Movimiento", max_length=220, unique=True)
+    nombre = models.CharField("Nombre Partido/Movimiento", max_length=255, unique=True)
     sigla = models.CharField("Sigla Partido/Movimiento", max_length=50, unique=True)
-    logo = models.ImageField("Logo Partido/Movimiento", upload_to='fotos_constituyentes/', null=True, blank=True)
+    logo = models.ImageField("Logo Partido/Movimiento", upload_to='logos/', null=True, blank=True)
     class Meta:
         verbose_name = "Partido/Movimiento"
         verbose_name_plural = "Partidos/Movimientos"
@@ -36,7 +36,7 @@ class Movimiento(models.Model):
 
 
 class Constituyente(models.Model):
-    nombre = models.CharField("Nombre Constituyente", max_length=220, unique=True)
+    nombre = models.CharField("Nombre Constituyente", max_length=255, unique=True)
     cargo = models.ManyToManyField(Cargo, related_name="cargos_constituyente", verbose_name="Cargos de Constituyente en la Convención", blank=True)
     lista = models.ForeignKey(Lista, related_name="lista_constituyente", verbose_name="Lista del Constituyente", null=True, blank=True, on_delete=models.SET_NULL)
     distrito = models.ForeignKey(Distrito, related_name="distrito_constituyente", verbose_name="Distrito del Constituyente", null=True, blank=True, on_delete=models.SET_NULL)
