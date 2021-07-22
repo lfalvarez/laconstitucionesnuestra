@@ -3,18 +3,18 @@ from django.contrib.auth.models import AbstractUser
 from managers.models import Pais, Region, Distrito, Comuna
 
 
+
 class User(AbstractUser):
     is_ciudadano = models.BooleanField(default=False)
     is_organizacion = models.BooleanField(default=False)
     is_convencional = models.BooleanField(default=False)
     nombre = models.CharField("Nombre", max_length=255)
-    # last_name = models.CharField(max_length=255)
     last_login = models.DateTimeField(blank=True, null=True, verbose_name='last login')
 
 
 
 class Ciudadano(models.Model):
-    user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key = True)
     email = models.EmailField(max_length=255)
     GENERO = (
         ('Femenino', 'Femenino'),
@@ -51,7 +51,10 @@ class Ciudadano(models.Model):
 class Organizacion(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
     email = models.EmailField(max_length=255)
+    email_contacto = models.EmailField(max_length=255)
+    telefono_contacto = models.CharField(max_length=255)
     cualquiercosa = models.CharField(max_length=255)
+
     class Meta:
         verbose_name = "Organzación"
         verbose_name_plural = "Organizaciones"
@@ -65,7 +68,6 @@ class Convencional(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
     email = models.EmailField(max_length=255)
     cualquiercosa = models.CharField(max_length=255)
-
     class Meta:
         verbose_name = "Convencional"
         verbose_name_plural = "Convencionales"

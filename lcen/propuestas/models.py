@@ -1,41 +1,82 @@
 from django.db import models
+from usuarios.models import User
+from managers.models import Comuna
+from convencionales.models import Constituyente
+
+
+
+class TemaPropuesta(models.Model):
+    tema_propuesta = models.CharField("Tema de Propuesta",
+        max_length=100,
+        unique=True,
+        help_text="Temas predefinidos de propuestas")
+    class Meta:
+        verbose_name = "Tema Propuestas"
+        verbose_name_plural = "Temas Propuestas"
+    def __str__(self):
+        return self.tema_propuesta
+
+
+
+class ComponenteConstitucion(models.Model):
+    componente_constitucion = models.CharField("Componente Constitucional",
+        max_length=100,
+        unique=True,
+        help_text="Componente Constitucional de Propuesta")
+    class Meta:
+        verbose_name = "Componente Constitucional"
+        verbose_name_plural = "Componentes Constitucionales"
+    def __str__(self):
+        return self.componente_constitucion
 
 
 
 class Propuesta(models.Model):
-    autor = models.ForeignKey(User, verbose_name="Autor@ de Propuesta", null=True, on_delete=models.SET_NULL)
-    titulo = models.CharField("Título Propuesta", max_length=225)
-    cuerpo = models.TextField("Texto Propuesta")
-    tipo = models.ForeignKey(TipoPropuesta, related_name="tipo_propuesta", verbose_name="Tipo/Origen Propuesta", null=True, blank=True, help_text="Tipo predefinido de propuesta -individual o colectiva-", on_delete=models.SET_NULL)
-    comuna_propuesta = models.ManyToManyField(Comuna, related_name="comuna_propuesta", verbose_name="Comuna/s de Propuesta", help_text="Seleccionar comuna/s si corresponde a una propuesta vinculada a territorio")
-    # Si la propuesta es general o tiene alcance nacional
-    propuesta_general = models.BooleanField(default=False)
-    # Tema principal de tu propuesta
-    tema = models.ForeignKey(TemaPropuesta, null=True, on_delete=models.SET_NULL)
-    # Tema opcional a añadir cuando no está en los temas ni subtemas predefinidos
-    otro_tema = models.CharField("Otro tema", max_length=225, null=True, blank=True)
-    # ¿Cuál es el problema que tú o tu organización busca solucionar?
-    problema = models.TextField("Descripción de problema a solucionar", null=True, blank=True)
-    # Con respecto al problema que planteaste, ¿Cuál sería la situación ideal?
-    situacion = models.TextField("Situación ideal de solución", null=True, blank=True)
-    # Para lograr esa situación ideal, ¿qué debería contemplar la Nueva Constitución?
-    contempla = models.TextField("Lo que debe contemplar la Constitución", null=True, blank=True)
-    # Componente de la constitución donde va la propuesta
-    componente = models.ManyToManyField(ComponenteConstitucion, verbose_name="Componente de la Constitución")
-    # Otro componente si no está en los predefinidos
-    otro_componente = models.CharField("Otro Componente", max_length=225, null=True, blank=True)
-    # ¿Tu propuesta ya cuenta con compromisos formales de apoyo de convencionales electos? Si/No
-    compromiso = models.BooleanField(default=False, verbose_name="Existen compromisos a esta propuesta")
-    # Adjunto de compromisos
-    adjunto_compromisos = models.FileField(upload_to='documents/', verbose_name="Documento de respaldo de compromisos", null=True, blank=True)
-    # Documento de copia de la propuesta
-    documento_propuesta = models.FileField(upload_to='documents/', verbose_name="Documento de copia de la Propuesta", null=True, blank=True)
-    # Otros antecedentes en documento completo o zip
-    anexo_propuesta = models.FileField(upload_to='documents/', verbose_name="Anexos de la Propuesta", null=True, blank=True)
-    # Títulos y Cuerpos cortos
-    titulo_corto = models.CharField("Título Propuesta Breve", max_length=100, null=True)
-    cuerpo_corto = models.CharField("Texto Propuesta Breve", max_length=100, null=True)
-
+    autor = models.ForeignKey(User,
+        verbose_name="Autor@ de Propuesta",
+        null=True,
+        on_delete=models.SET_NULL)
+    tema = models.ForeignKey(TemaPropuesta,
+        null=True,
+        help_text="¿Cuál es el tema principal de tu propuesta? Por favor selecciona una categoría del siguiente listado, pues nos ayudará a organizar temáticamente las propuestas en el buscador de la plataforma.",
+        on_delete=models.SET_NULL)
+    otros_temas = models.ManyToManyField(TemaPropuesta,
+        related_name="otros_temas_propuesta",
+        verbose_name="Otros Temas de Propuesta",
+        help_text="¿Qué otros temas aborda tu propuesta? Por favor selecciona hasta tres temas adicionales.")
+    problema = models.TextField("Descripción de problema a solucionar",
+        max_length=225,
+        null=True,
+        blank=True,
+        help_text="¿Cuál es el problema que tú o tu organización busca solucionar?")
+    situacion = models.TextField("Situación ideal de solución",
+        null=True,
+        blank=True,
+        help_text="Con respecto al problema planteado, ¿cuál sería la situación ideal?")
+    componente = models.TextField("Componente de la Constitución",
+        null=True,
+        blank=True,
+        help_text="Para avanzar en el logro de esa situación ideal, ¿qué debería contemplar la Nueva Constitución?")
+    otras_organizaciones = models.BooleanField("Junto a otras organizaciones",
+        default=False,
+        help_text="¿Esta propuesta fue elaborada en conjunto con otras organizaciones?")
+    organizaciones_de_propuesta = models.TextField("Otras Organizaciones",
+        null=True,
+        blank=True,
+        help_text="Si tu respuesta fue 'sí', por favor escribe cuáles (separadas por comas). No te olvides de incluir a tu organización.")
+    compromiso_convencionales = models.BooleanField("Convencionales comprometidos",
+        default=False,
+        help_text="¿Tu propuesta cuenta con compromisos formales de apoyo de convencionales constituyentes?")
+    comvencionales_comprometidos = models.ManyToManyField(Constituyente,
+        related_name="convencionales_comprometidos",
+        verbose_name="Nombres Convencionales Comprometidos",
+        blank=True,
+        help_text="Si tu respuesta fue 'sí', por favor escribe cuáles (separadas por comas). No te olvides de incluir a tu organización.")
+    anexo_propuesta = models.FileField(upload_to='documents/',
+        verbose_name="Anexos de la Propuesta",
+        null=True,
+        blank=True)
+    titulo = models.CharField("Título Propuesta", max_length=255, null=True)
     class Meta:
         verbose_name = "Propuesta Ciudadana"
         verbose_name_plural = "Propuestas Ciudadanas"

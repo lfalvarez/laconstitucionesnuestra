@@ -1,9 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from crispy_forms.helper import FormHelper
 from django.db import transaction
 from managers.models import Pais, Region, Comuna, Distrito
 from .models import User, Ciudadano, Organizacion, Convencional
+
 
 
 class CiudadanoSignUpForm(UserCreationForm):
@@ -40,6 +40,7 @@ class CiudadanoSignUpForm(UserCreationForm):
         return user
 
 
+
 class OrganizacionSignUpForm(UserCreationForm):
     username = forms.CharField(label='Nombre Usuario')
     password1 = forms.CharField(label='Contraseña', widget=(forms.PasswordInput(attrs={'class': 'form-control'})))
@@ -66,6 +67,7 @@ class OrganizacionSignUpForm(UserCreationForm):
         organizacion.cualquiercosa=self.cleaned_data.get('cualquiercosa')
         organizacion.save()
         return user
+
 
 
 class ConvencionalSignUpForm(UserCreationForm):
