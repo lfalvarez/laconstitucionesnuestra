@@ -3,7 +3,9 @@ from django import forms
 from django.db import transaction
 from managers.models import Pais, Region, Comuna, Distrito
 from .models import User, Ciudadano, Organizacion, Convencional
+from django.contrib.auth.models import Group
 
+proponentes=Group.objects.get(name='proponentes')
 
 
 class CiudadanoSignUpForm(UserCreationForm):
@@ -36,6 +38,7 @@ class CiudadanoSignUpForm(UserCreationForm):
         ciudadano.region=self.cleaned_data.get('region')
         ciudadano.comuna=self.cleaned_data.get('comuna')
         ciudadano.cualquiercosa=self.cleaned_data.get('cualquiercosa')
+        proponentes.user_set.add(user)
         ciudadano.save()
         return user
 
@@ -65,6 +68,7 @@ class OrganizacionSignUpForm(UserCreationForm):
         organizacion.email_contacto=self.cleaned_data.get('email_contacto')
         organizacion.telefono_contacto=self.cleaned_data.get('telefono_contacto')
         organizacion.cualquiercosa=self.cleaned_data.get('cualquiercosa')
+        proponentes.user_set.add(user)
         organizacion.save()
         return user
 
