@@ -1,5 +1,5 @@
 from django.db import models
-from managers.models import Pais, Region, Comuna, Cobertura
+from managers.models import Pais, Region, Comuna, Alcance
 
 
 
@@ -45,10 +45,8 @@ class OrganizacionProfile(models.Model):
         blank=True,
         null=True,
         on_delete=models.SET_NULL)
-    alcance = models.ManyToMany(Alcance,
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL)
+    alcance = models.ManyToManyField(Alcance,
+        blank=True)
     class Meta:
         verbose_name = "Organización Profile"
         verbose_name_plural = "Organizaciones Profiles"
